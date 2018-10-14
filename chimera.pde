@@ -7,10 +7,10 @@ int sampleRate = 44100;
 //Map<String, Note> keyMap = new Map<String, Note>();
 ArrayList<Button> buttons = new ArrayList<Button>();
 ArrayList<Button> keys = new ArrayList<Button>();
-Button octaveButton = new Button(0, 0, width / 3, 100, color(255), color(0), "Octave");
-Button sourceButton = new Button(width / 3 + 1, 0, width / 3, 100, color(255), color(0), "Source");
-OctaveButton octaveUp = new OctaveButton(0, 0, width / 6 - 1, 100, color(255), color(0), false);
-OctaveButton octaveDown = new OctaveButton(width / 6, 0, width / 6 - 1, 100, color(255), color(0), true);
+Button octaveButton = new Button(0, 0, 2, width / 3, 100, color(255), color(0), "Octave");
+Button sourceButton = new Button(width / 3 + 1, 0, 2, width / 3, 100, color(255), color(0), "Source");
+OctaveButton octaveUp = new OctaveButton(0, 0, 2, width / 6 - 1, 100, color(255), color(0), false);
+OctaveButton octaveDown = new OctaveButton(width / 6, 0, 2, width / 6 - 1, 100, color(255), color(0), true);
 
 HilbertCurve curve;
 
@@ -41,6 +41,7 @@ void setup() {
     color activeColor;
     color inactiveColor;
     Boolean blackKey = false;
+    int z;
     for (int j = 0; j < blackKeyIndices.length; j++) {
       if (blackKeyIndices[j] == i) {
         blackKey = true;
@@ -49,13 +50,16 @@ void setup() {
     if (blackKey) {
       activeColor = color(128);
       inactiveColor = color(0);
+      z = 1;
     } else {
       inactiveColor = color(255);
       activeColor = color(128);
+      z = 0;
     }
     keys.add(new Button(
       i * width / 13, 
       100, 
+      z, 
       width / 13 - 1, 
       height - 100, 
       activeColor, 
@@ -92,8 +96,19 @@ void draw() {
 }
 
 void mousePressed() {
+  Button topMostButton = buttons.get(0);
+  Boolean buttonHit = false;
+  int topMostZ = -1000;
   for (Button b : buttons) {
-    b.mousePressed();
+    int z = b.mousePressed();
+    if (z > topMostZ) {
+      topMostZ = z;
+      topMostButton = b;
+      buttonHit = true;
+    } 
+    if(buttonHit) {
+      topMostButton.clickedCallback();
+    }
   }
 }
 

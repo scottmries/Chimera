@@ -1,8 +1,8 @@
 class OctaveButton extends Button {
   Boolean increments;
   
-  OctaveButton(int x, int y, int width, int height, color activeColor, color inactiveColor, Boolean increments) {
-    super(x, y, width, height, activeColor, inactiveColor);
+  OctaveButton(int x, int y, int z, int width, int height, color activeColor, color inactiveColor, Boolean increments) {
+    super(x, y, z, width, height, activeColor, inactiveColor);
     this.increments = increments;
   }
   
@@ -29,7 +29,7 @@ class OctaveButton extends Button {
     }  
   }
   
-  void mousePressed() {
+  void clickCallback() {
     if(increments) {
       if(octave < 8) {
         octave++;

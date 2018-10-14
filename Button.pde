@@ -1,23 +1,25 @@
 class Button {
-  int x, y, width, height;
+  int x, y, z, width, height;
   color activeColor, inactiveColor;
   Boolean active = false;
   String text;
   
-  Button(int x, int y, int width, int height, color activeColor, color inactiveColor) {
+  Button(int x, int y, int z, int width, int height, color activeColor, color inactiveColor) {
     buttons.add(this);
     this.x = x;
     this.y = y;
+    this.z = z;
     this.width = width;
     this.height = height;
     this.activeColor = activeColor;
     this.inactiveColor = inactiveColor;
   }
   
-  Button(int x, int y, int width, int height, color activeColor, color inactiveColor, String text) {
+  Button(int x, int y, int z, int width, int height, color activeColor, color inactiveColor, String text) {
     buttons.add(this);
     this.x = x;
     this.y = y;
+    this.z = z;
     this.width = width;
     this.height = height;
     this.activeColor = activeColor;
@@ -44,10 +46,16 @@ class Button {
     }  
   }
 
-  public void mousePressed() {
+  public int mousePressed() {
+    // returns its own z-index if the click is within its bounds
     if (mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height) {
-      active = true;
+      return z;
     }
+    return -1001;
+  }
+  
+  void clickedCallback() {
+    active = true;
   }
 
   public void mouseReleased() {
