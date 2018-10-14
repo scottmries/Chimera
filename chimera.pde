@@ -1,7 +1,14 @@
 import java.util.Map;
 import processing.video.*;
+import processing.sound.*;
 
 int sampleRate = 44100;
+int maxOctave = 8;
+int octave = 4;
+
+OctaveSet octaveSet = new OctaveSet();
+
+MonoSynth synth;
 
 //TODO: make a note class and associate buttons with notes
 //Map<String, Note> keyMap = new Map<String, Note>();
@@ -13,10 +20,9 @@ OctaveButton octaveUp = new OctaveButton(0, 0, 2, width / 6 - 1, 100, color(255)
 OctaveButton octaveDown = new OctaveButton(width / 6, 0, 2, width / 6 - 1, 100, color(255), color(0), true);
 
 HilbertCurve curve;
+HilbertCamInterface hilbertCamInterface;
 
 int[] blackKeyIndices = {1, 3, 6, 8, 10};
-
-int octave = 4;
 
 Capture cam;
 
@@ -30,12 +36,17 @@ void setup() {
     println("There are no cameras available for capture.");
     exit();
   } else {
-    
+    //for(int i = 0; i < cameras.length; i++) {
+    //  println(cameras[i]);
+    //}
     // The camera can be initialized directly using an 
     // element from the array returned by list():
-    cam = new Capture(this, cameras[0]);
+    cam = new Capture(this, cameras[3]);
+    println(cam);
     cam.start();     
   }   
+  
+  synth = new MonoSynth(this);
   
   for (int i = 0; i < 13; i++) {
     color activeColor;
@@ -69,7 +80,7 @@ void setup() {
 }
 
 void draw() {
-  if (cam.available() == true) {
+  if(cam.available()) {
     cam.read();
   }
   background(255);
@@ -83,15 +94,11 @@ void draw() {
   stroke(0, 255, 0);
   if (curve == null && cam.width > 0 && cam.height > 0) {
     curve = new HilbertCurve(cam.width, cam.height, sampleRate);
+    println("about to initialize hilbertCam");
+    hilbertCamInterface = new HilbertCamInterface(cam, curve);
   } else if (curve != null) {
-    for(int i = 0; i < curve.points.length - 1; i++){
-      line(
-        curve.points[i].x, 
-        curve.points[i].y,
-        curve.points[i+1].x,
-        curve.points[i+1].y
-      );
-    }
+    curve.draw();
+    hilbertCamInterface.implement();
   }
 }
 
@@ -117,3 +124,5 @@ void mouseReleased() {
     key.mouseReleased();
   }
 }
+
+void exit() {}

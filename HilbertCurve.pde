@@ -91,4 +91,15 @@ class HilbertCurve {
   HilbertPoint scale(HilbertPoint point, float scale) {
     return new HilbertPoint(floor(point.x * scale), floor(point.y * scale));
   }
+  
+  void draw() {
+    for(int i = 0; i < curve.points.length - 1; i++){
+      line(
+        curve.points[i].x, 
+        curve.points[i].y,
+        curve.points[i+1].x,
+        curve.points[i+1].y
+      );
+    }
+  }
 }

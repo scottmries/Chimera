@@ -3,6 +3,7 @@ class Button {
   color activeColor, inactiveColor;
   Boolean active = false;
   String text;
+  float pitch;
   
   Button(int x, int y, int z, int width, int height, color activeColor, color inactiveColor) {
     buttons.add(this);

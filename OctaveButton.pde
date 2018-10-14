@@ -31,7 +31,7 @@ class OctaveButton extends Button {
   
   void clickCallback() {
     if(increments) {
-      if(octave < 8) {
+      if(octave < maxOctave) {
         octave++;
       }
     } else {
